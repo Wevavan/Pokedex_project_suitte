@@ -1,8 +1,22 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import '../style.css';
 
-const PokedexInfo = ({pokedex}) => {
-    console.log(pokedex)
+const PokedexInfo = ({}) => {
+
+    const { id } = useParams()
+    const [pokemon, setPokemon] = useState({});
+
+    useEffect(() => {
+        const getPokemon = async() =>{
+          const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+          setPokemon(data);
+          console.log(data);
+        }
+        getPokemon();
+    }, [id]);
+
   return (
     <div className='pokedetail container d-flex justify-content-center align-items-center'>
         <div className='hcard col-sm-2 border p-2 m-1 linka'>
@@ -10,7 +24,7 @@ const PokedexInfo = ({pokedex}) => {
                 <img className='border' src='' alt=''/>
             </div>
             <div className='hcard_text d-flex'>
-                <p className='align-items-center fw-bold mt-3'>Nom de Pokemon</p>
+                <p className='align-items-center fw-bold mt-3'>{pokemon.name}</p>
             </div>
             <div className='abilities'>
                 <div className='group'>Blaze</div>
